@@ -6,13 +6,14 @@ Returns an empty list if n <= 0
 You can assume n will be always an integer
 """
 def pascal_triangle(n):
-    i = []
-    if n<=0:
-        return i
-    i = [[1]]
-    for j in range(1, n):
-        i.append([1])
-        for k in range(1, j):
-            i[j].append(i[j-1][k-1] + i[j-1][k])
-        i[j].append(1)
-        return i
+    x = []
+    if n <= 0:
+        return x
+    x = [[1]]
+    for i in range(1, n):
+        y = [1]
+        for j in range(len(x[i - 1]) - 1):
+            y.append(x[i - 1][j] + x[i - 1][j + 1])
+        y.append(1)
+        x.append(y)
+    return x
