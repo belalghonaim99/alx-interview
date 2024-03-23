@@ -10,7 +10,7 @@ def minOperations(n: int) -> int:
     while (len(re2) < n):
         if (n % len(re2) == 0):
             opeartion += 2
-            re = re2
+            re2 = re
             re2 += re2
     else:
         opeartion += 1
