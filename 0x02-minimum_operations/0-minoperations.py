@@ -2,7 +2,7 @@
 """ Min Operations """
 
 
-def minOperations(n):
+def minOperations(n: int) -> int:
     """ Min Operations """
     re = 'H'
     re2 = 'H'
