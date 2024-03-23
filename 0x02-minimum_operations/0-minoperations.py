@@ -4,22 +4,17 @@
 
 def minOperations(n: int) -> int:
     """ Min Operations """
-    if n <= 1:
-        return n
-
     re = 'H'
     re2 = 'H'
     opeartion = 0
-
-    while len(re2) < n:
-        if n % len(re2) == 0:
+    while (len(re2) < n):
+        if (n % len(re2) == 0):
             opeartion += 2
-            re2 += re
-        else:
-            opeartion += 1
-            re2 += re
-
-    if len(re2) != n:
+            re = re2
+            re2 += re2
+    else:
+        opeartion += 1
+        re2 += re
+    if (len(re2) != n):
         return 0
-
     return opeartion
