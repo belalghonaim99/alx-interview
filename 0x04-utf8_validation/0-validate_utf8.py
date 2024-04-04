@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ represents a valid UTF-8 encoding. """
 
+
 def get_leading_ones(byte):
     """ returns the number of leading ones in a byte """
     mask = 1 << 7
