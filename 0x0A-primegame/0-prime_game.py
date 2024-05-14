@@ -4,11 +4,7 @@
 
 
 def isWinner(x, nums):
-
-
     def generate_primes(n):
-
-
         primes = [True for _ in range(n + 1)]
         p = 2
         while p * p <= n:
