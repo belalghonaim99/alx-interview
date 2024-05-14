@@ -2,22 +2,28 @@
 
 """ Prime Game """
 
-
 def isWinner(x, nums):
+    """
+    Determines the winner of the Prime Game.
 
+    Args:
+        x (int): The number of rounds.
+        nums (list): An array of integers representing the upper bounds for each round.
+
+    Returns:
+        str or None: The name of the player that won the most rounds. None if the winner cannot be determined.
+    """
 
     def generate_primes(n):
-
-
         primes = [True for _ in range(n + 1)]
         p = 2
         while p * p <= n:
-            if primes[p] == True:
+            if primes[p]:
                 for i in range(p * p, n + 1, p):
                     primes[i] = False
             p += 1
         return [p for p in range(2, n + 1) if primes[p]]
-    # print(nums)
+
     maria_wins = 0
     ben_wins = 0
 
@@ -33,7 +39,7 @@ def isWinner(x, nums):
                 else:
                     ben_wins += 1
             turn += 1
-    # print(maria_wins, ben_wins)
+
     if maria_wins > ben_wins:
         return "Maria"
     elif maria_wins < ben_wins:
