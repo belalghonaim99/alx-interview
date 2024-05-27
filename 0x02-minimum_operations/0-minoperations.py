@@ -2,19 +2,15 @@
 """ Min Operations """
 
 
-def minOperations(n: int) -> int:
-    """ Min Operations """
-    char = 'H'
-    char2 = 'H'
-    opeartion = 0
-    while (len(char2) < n):
-        if (n % len(char2) == 0):
-            opeartion += 2
-            char = char2
-            char2 += char
-    else:
-        opeartion += 1
-        char2 += char
-    if len(char2) != n:
+def minOperations(n):
+    if n <= 1:
         return 0
-    return opeartion
+    
+    operations = 0
+    divided = 2
+    while n > 1:
+        while n % divided == 0:
+            operations += divided
+            n //= divided
+        divided += 1
+    return operations
