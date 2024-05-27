@@ -4,17 +4,17 @@
 
 def minOperations(n: int) -> int:
     """ Min Operations """
-    re = 'H'
-    re2 = 'H'
+    char = 'H'
+    char2 = 'H'
     opeartion = 0
-    while (len(re2) < n):
-        if (n % len(re2) == 0):
+    while (len(char2) < n):
+        if (n % len(char2) == 0):
             opeartion += 2
-            re = re2
-            re2 += re2
+            char = char2
+            char2 += char
     else:
         opeartion += 1
-        re2 += re
-    if (len(re2) != n):
+        char2 += char
+    if len(char2) != n:
         return 0
     return opeartion
