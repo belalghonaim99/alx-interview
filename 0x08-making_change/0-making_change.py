@@ -7,7 +7,7 @@ def makeChange(coins, total):
     Args: 
         coins: list of coins
         total: total amount
-    
+    Returns: -1
     """
     if total <= 0:
         return 0
