@@ -7,6 +7,7 @@ Script to read stdin line by line and compute metrics:
 
 import sys
 
+
 def print_stats(total_size, status_codes):
     """
     Print the accumulated metrics
