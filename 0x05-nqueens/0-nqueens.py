@@ -1,17 +1,21 @@
 #!/usr/bin/python3
-"""N queens solution finder module.
+"""
+The N queens puzzle is the challenge
 """
 import sys
 
 
-fix_bug = []
-"""The list of solutions for the n queens problem.
+solutions = []
+"""
+The list of solutions for the n queens problem.
 """
 n = 0
-"""The size of the chessboard.
+"""
+The size of the chessboard.
 """
 pos = None
-""" The list of possible positions for the queens.
+"""
+The list of positions for the n queens problem.
 """
 
 
@@ -35,25 +39,25 @@ def get_input():
     return n
 
 
-def is_attacking(position_zero, position_one):
+def is_attacking(pos0, pos1):
     """
     Checks if two positions are attacking each other.
     """
-    if (position_zero[0] == position_one[0]) or (position_zero[1] == position_one[1]):
+    if (pos0[0] == pos1[0]) or (pos0[1] == pos1[1]):
         return True
-    return abs(position_zero[0] - position_one[0]) == abs(position_zero[1] - position_one[1])
+    return abs(pos0[0] - pos1[0]) == abs(pos0[1] - pos1[1])
 
 
 def group_exists(group):
     """
-    Checks if a group of positions already exists in the solutions list.
+    Checks if a group of positions already exists in the solutions.
     """
-    global fix_bug
-    for bug in fix_bug:
+    global solutions
+    for stn in solutions:
         i = 0
-        for n_pos in bug:
-            for y_pos in group:
-                if n_pos[0] == y_pos[0] and n_pos[1] == y_pos[1]:
+        for stn_pos in stn:
+            for grp_pos in group:
+                if stn_pos[0] == grp_pos[0] and stn_pos[1] == grp_pos[1]:
                     i += 1
         if i == n:
             return True
@@ -62,28 +66,28 @@ def group_exists(group):
 
 def build_solution(row, group):
     """
-    Builds a solution for the n queens problem.
+    
     """
-    global fix_bug
+    global solutions
     global n
     if row == n:
-        temp0 = group.copy()
-        if not group_exists(temp0):
-            fix_bug.append(temp0)
+        tmp0 = group.copy()
+        if not group_exists(tmp0):
+            solutions.append(tmp0)
     else:
-        for c in range(n):
-            b = (row * n) + c
-            matches = zip(list([pos[b]]) * len(group), group)
-            usedPositions = map(lambda x: is_attacking(x[0], x[1]), matches)
-            group.append(pos[b].copy())
-            if not any(usedPositions):
+        for col in range(n):
+            a = (row * n) + col
+            matches = zip(list([pos[a]]) * len(group), group)
+            used_positions = map(lambda x: is_attacking(x[0], x[1]), matches)
+            group.append(pos[a].copy())
+            if not any(used_positions):
                 build_solution(row + 1, group)
             group.pop(len(group) - 1)
 
 
 def get_solutions():
     """
-    Gets the solutions for the n queens problem.
+    Gets all the solutions for the n queens problem.
     """
     global pos, n
     pos = list(map(lambda x: [x // n, x % n], range(n ** 2)))
@@ -94,5 +98,5 @@ def get_solutions():
 
 n = get_input()
 get_solutions()
-for solution in fix_bug:
+for solution in solutions:
     print(solution)
