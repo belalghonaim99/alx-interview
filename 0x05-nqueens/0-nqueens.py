@@ -3,7 +3,7 @@
 import sys
 
 
-solution = []
+solutions = []
 """The list of solutions for the N queens problem."""
 n = 0
 """The size of the chessboard."""
