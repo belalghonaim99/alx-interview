@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" This module parses the log of an HTTP request and prints the statistics of the log."""
+"""This module parses a log file and prints the statistics of the HTTP request log."""
 import re
 
 
@@ -27,7 +27,7 @@ def extract_input(input_line):
 
 
 def print_statistics(total_file_size, status_codes_stats):
-    """   Prints the statistics of the HTTP request log."""
+    """ Prints the statistics of the HTTP request log."""
     print('File size: {:d}'.format(total_file_size), flush=True)
     for status_code in sorted(status_codes_stats.keys()):
         num = status_codes_stats.get(status_code, 0)
