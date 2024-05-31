@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 
+
 def is_safe(board, row, col):
     """
     Check if it's safe to place a queen at board[row][col]
