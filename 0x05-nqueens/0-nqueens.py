@@ -12,7 +12,7 @@ position = None
 
 
 def get_input():
-    """Validates the input arguments and returns the size of the chessboard."""
+    """Validates input arguments and returns the size of the chessboard."""
     global n
     n = 0
     if len(sys.argv) != 2:
