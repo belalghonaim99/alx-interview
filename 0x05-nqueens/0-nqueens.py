@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import sys
 
+""" N Queens """
 def is_safe(board, row, col):
     for i in range(row):
         if board[i] == col or abs(board[i] - col) == row - i:
@@ -8,6 +9,7 @@ def is_safe(board, row, col):
     return True
 
 def solve_nqueens(N, board, row, solutions):
+    """ Solve N Queens"""
     if row == N:
         solutions.append(board[:])
         return
