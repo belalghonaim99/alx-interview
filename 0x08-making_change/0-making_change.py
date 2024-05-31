@@ -4,7 +4,7 @@
 
 def makeChange(coins, total):
     """ Making changes needed
-    Args: 
+    Args:
         coins: list of coins
         total: total amount
     Returns: -1
