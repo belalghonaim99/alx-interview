@@ -4,7 +4,8 @@ import re
 
 
 def extract_input(input_line):
-    """Extracts the IP, date, request, status code, and file size from a given"""
+    """Extracts the IP, date
+    request, status code, and file size from a given"""
     f = (
         r'\s*(?P<ip>\S+)\s*',
         r'\s*\[(?P<date>\d+\-\d+\-\d+ \d+:\d+:\d+\.\d+)\]',
