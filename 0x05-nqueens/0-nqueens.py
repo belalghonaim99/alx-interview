@@ -27,7 +27,8 @@ def solve_nqueens_util(board, col):
     """
     Recursive utility function to solve N Queens problem
     """
-    # Base case: If all queens are placed
+
+
     if col >= N:
         result = []
         for i in range(N):
@@ -47,6 +48,7 @@ def solve_nqueens_util(board, col):
 
             board[i][col] = 0
 
+
 def solve_nqueens(N):
     """
     Solve the N Queens problem
@@ -54,9 +56,9 @@ def solve_nqueens(N):
     board = [[0] * N for _ in range(N)]
     solve_nqueens_util(board, 0)
 
-# Main program
+
 if __name__ == "__main__":
-    # Validate the number of arguments
+
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
         sys.exit(1)
