@@ -1,80 +1,84 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
+"""This module solves the N queens problem."""
+import sys
 
-def is_safe(board, row, col):
-    """
-    Check if it's safe to place a queen at board[row][col]
-    """
-    # Check this row on left side
-    for i in range(col):
-        if board[row][i] == 1:
-            return False
 
-    # Check upper diagonal on left side
-    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
-        if board[i][j] == 1:
-            return False
+solution = []
+"""The list of solutions for the N queens problem."""
+n = 0
+"""The size of the chessboard."""
+position = None
+"""The list of possible positions for the queens."""
 
-    # Check lower diagonal on left side
-    for i, j in zip(range(row, N, 1), range(col, -1, -1)):
-        if board[i][j] == 1:
-            return False
 
-    return True
-
-def solve_nqueens_util(board, col):
-    """
-    Recursive utility function to solve N Queens problem
-    """
-    # Base case: If all queens are placed
-    if col >= N:
-        result = []
-        for i in range(N):
-            for j in range(N):
-                if board[i][j] == 1:
-                    result.append([i, j])
-        solutions.append(result)
-        return True
-
-    # Consider this column and try placing this queen in all rows one by one
-    for i in range(N):
-        if is_safe(board, i, col):
-            # Place this queen in board[i][col]
-            board[i][col] = 1
-
-            # Recur to place rest of the queens
-            solve_nqueens_util(board, col + 1)
-
-            # If placing queen in board[i][col] doesn't lead to a solution, then backtrack
-            board[i][col] = 0
-
-def solve_nqueens(N):
-    """
-    Solve the N Queens problem
-    """
-    board = [[0] * N for _ in range(N)]
-    solve_nqueens_util(board, 0)
-
-# Main program
-if __name__ == "__main__":
-    import sys
-    
-    # Validate the number of arguments
+def get_input():
+    """Validates the input arguments and returns the size of the chessboard."""
+    global n
+    n = 0
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
-        exit(1)
-
+        sys.exit(1)
     try:
-        N = int(sys.argv[1])
-    except ValueError:
+        n = int(sys.argv[1])
+    except Exception:
         print("N must be a number")
-        exit(1)
-
-    if N < 4:
+        sys.exit(1)
+    if n < 4:
         print("N must be at least 4")
-        exit(1)
+        sys.exit(1)
+    return n
 
-    solutions = []
-    solve_nqueens(N)
 
-    for sol in solutions:
-        print(sol)
+def is_attacking(pos0, pos1):
+    """ Checks if two queens are attacking each other."""
+    if (pos0[0] == pos1[0]) or (pos0[1] == pos1[1]):
+        return True
+    return abs(pos0[0] - pos1[0]) == abs(pos0[1] - pos1[1])
+
+
+def group_exists(group):
+    """Checks if a group of positions already exists in the solutions list."""
+    global solutions
+    for stn in solutions:
+        i = 0
+        for stn_pos in stn:
+            for grp_pos in group:
+                if stn_pos[0] == grp_pos[0] and stn_pos[1] == grp_pos[1]:
+                    i += 1
+        if i == n:
+            return True
+    return False
+
+
+def build_solution(r, group):
+    """ Builds a solution for the N queens problem."""
+    global solutions
+    global n
+    if r == n:
+        temp0 = group.copy()
+        if not group_exists(temp0):
+            solutions.append(temp0)
+    else:
+        for col in range(n):
+            a = (r * n) + col
+            matches = zip(list([position[a]]) * len(group), group)
+            used_positions = map(lambda x: is_attacking(x[0], x[1]), matches)
+            group.append(position[a].copy())
+            if not any(used_positions):
+                build_solution(r + 1, group)
+            group.pop(len(group) - 1)
+
+
+def get_solutions():
+    """Gets all the solutions for the N queens problem."""
+    global position, n
+    position = list(map(lambda x: [x // n, x % n], range(n ** 2)))
+    a = 0
+    group = []
+    build_solution(a, group)
+
+
+n = get_input()
+get_solutions()
+for solution in solutions:
+    print(solution)
