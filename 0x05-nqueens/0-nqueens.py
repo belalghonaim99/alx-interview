@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-import sys
-
 
 def is_safe(board, row, col):
     """
@@ -23,11 +21,11 @@ def is_safe(board, row, col):
 
     return True
 
-
 def solve_nqueens_util(board, col):
     """
     Recursive utility function to solve N Queens problem
     """
+    # Base case: If all queens are placed
     if col >= N:
         result = []
         for i in range(N):
@@ -37,6 +35,7 @@ def solve_nqueens_util(board, col):
         solutions.append(result)
         return True
 
+    # Consider this column and try placing this queen in all rows one by one
     for i in range(N):
         if is_safe(board, i, col):
             # Place this queen in board[i][col]
@@ -45,8 +44,8 @@ def solve_nqueens_util(board, col):
             # Recur to place rest of the queens
             solve_nqueens_util(board, col + 1)
 
+            # If placing queen in board[i][col] doesn't lead to a solution, then backtrack
             board[i][col] = 0
-
 
 def solve_nqueens(N):
     """
@@ -55,22 +54,24 @@ def solve_nqueens(N):
     board = [[0] * N for _ in range(N)]
     solve_nqueens_util(board, 0)
 
-
+# Main program
 if __name__ == "__main__":
-
+    import sys
+    
+    # Validate the number of arguments
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
-        sys.exit(1)
+        exit(1)
 
     try:
         N = int(sys.argv[1])
     except ValueError:
         print("N must be a number")
-        sys.exit(1)
+        exit(1)
 
     if N < 4:
         print("N must be at least 4")
-        sys.exit(1)
+        exit(1)
 
     solutions = []
     solve_nqueens(N)
