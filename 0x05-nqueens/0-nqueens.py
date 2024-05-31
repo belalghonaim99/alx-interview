@@ -28,7 +28,6 @@ def get_input():
         sys.exit(1)
     return n
 
-<<<<<<< HEAD
 
 def solve_nqueens_util(board, col):
     """
@@ -43,8 +42,7 @@ def solve_nqueens_util(board, col):
                     result.append([i, j])
         solutions.append(result)
         return True
-=======
->>>>>>> d594587d86ac0f07f21b19c18fecd284e41a05b4
+
 
 def is_attacking(pos0, pos1):
     """ Checks if two queens are attacking each other."""
