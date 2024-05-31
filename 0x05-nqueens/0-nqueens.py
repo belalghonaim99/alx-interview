@@ -21,6 +21,7 @@ def is_safe(board, row, col):
 
     return True
 
+
 def solve_nqueens_util(board, col):
     """
     Recursive utility function to solve N Queens problem
