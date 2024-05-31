@@ -8,7 +8,7 @@ if (process.argv.length > 2) {
       console.log(err);
     }
     const charURL = JSON.parse(body).characters;
-    const charName = charURL.map(
+    const charactersName = charURL.map(
       url => new Promise((resolve, reject) => {
         request(url, (promiseErr, __, charactersReqBody) => {
           if (promiseErr) {
@@ -18,7 +18,7 @@ if (process.argv.length > 2) {
         });
       }));
 
-    Promise.all(charName)
+    Promise.all(charactersName)
       .then(names => console.log(names.join('\n')))
       .catch(allErr => console.log(allErr));
   });
