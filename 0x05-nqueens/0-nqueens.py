@@ -1,55 +1,54 @@
 #!/usr/bin/python3
 """
-Solution to the nqueens problem
+N queens problem
 """
 import sys
 
 
-def backtrack(board, n, colums, position, g, rows):
+def backtrack(r, n, cols, pos, neg, board):
     """
-    Backtracking function to find all possible solutions
-    to the nqueens problem
+    backtrack function to solve the nqueens problem
     """
-    if rows == n:
-        response = []
-        for i in range(len(board)):
-            for k in range(len(board[i])):
-                if board[i][k] == 1:
-                    response.append([i, k])
-        print(response)
+    if r == n:
+        res = []
+        for l in range(len(board)):
+            for k in range(len(board[l])):
+                if board[l][k] == 1:
+                    res.append([l, k])
+        print(res)
         return
 
-    for j in range(n):
-        if j in colums or (rows + j) in position or (rows - j) in g:
+    for c in range(n):
+        if c in cols or (r + c) in pos or (r - c) in neg:
             continue
 
-        colums.add(j)
-        position.add(rows + j)
-        g.add(rows - j)
-        board[rows][j] = 1
+        cols.add(c)
+        pos.add(r + c)
+        neg.add(r - c)
+        board[r][c] = 1
 
-        backtrack(rows+1, n, colums, position, g, board)
+        backtrack(r+1, n, cols, pos, neg, board)
 
-        colums.remove(j)
-        position.remove(rows + j)
-        g.remove(rows - j)
-        board[rows][j] = 0
+        cols.remove(c)
+        pos.remove(r + c)
+        neg.remove(r - c)
+        board[r][c] = 0
 
 
 def nqueens(n):
     """
-    Function to solve the nqueens problem
+    nqueens function to solve the nqueens problem
     Args:
-        n: int, size of the chess board
+        n: number of queens
     Return:
-        None
+        list of lists of the positions of the queens
     """
     cols = set()
-    pos = set()
-    n_diag = set()
+    pos_diag = set()
+    neg_diag = set()
     board = [[0] * n for i in range(n)]
 
-    backtrack(0, n, cols, pos, n_diag, board)
+    backtrack(0, n, cols, pos_diag, neg_diag, board)
 
 
 if __name__ == "__main__":
@@ -58,11 +57,11 @@ if __name__ == "__main__":
         print("Usage: nqueens N")
         sys.exit(1)
     try:
-        g = int(n[1])
-        if g < 4:
+        nn = int(n[1])
+        if nn < 4:
             print("N must be at least 4")
             sys.exit(1)
-        nqueens(g)
+        nqueens(nn)
     except ValueError:
         print("N must be a number")
         sys.exit(1)
