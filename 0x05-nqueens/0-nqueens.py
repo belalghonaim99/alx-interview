@@ -1,45 +1,77 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 import sys
 
-""" N Queens """
 def is_safe(board, row, col):
-    for i in range(row):
-        if board[i] == col or abs(board[i] - col) == row - i:
+    """
+    Check if it's safe to place a queen at board[row][col]
+    """
+    # Check this row on left side
+    for i in range(col):
+        if board[row][i] == 1:
             return False
+
+    # Check upper diagonal on left side
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
+    # Check lower diagonal on left side
+    for i, j in zip(range(row, N, 1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
     return True
 
-def solve_nqueens(N, board, row, solutions):
-    """ Solve N Queens"""
-    if row == N:
-        solutions.append(board[:])
-        return
+def solve_nqueens_util(board, col):
+    """
+    Recursive utility function to solve N Queens problem
+    """
+    # Base case: If all queens are placed
+    if col >= N:
+        result = []
+        for i in range(N):
+            for j in range(N):
+                if board[i][j] == 1:
+                    result.append([i, j])
+        solutions.append(result)
+        return True
 
-    for col in range(N):
-        if is_safe(board, row, col):
-            board[row] = col
-            solve_nqueens(N, board, row + 1, solutions)
+    for i in range(N):
+        if is_safe(board, i, col):
+            # Place this queen in board[i][col]
+            board[i][col] = 1
 
-def print_solutions(N):
-    if not N.isdigit():
-        print("N must be a number")
-        sys.exit(1)
+            # Recur to place rest of the queens
+            solve_nqueens_util(board, col + 1)
 
-    N = int(N)
-    if N < 4:
-        print("N must be at least 4")
-        sys.exit(1)
+            board[i][col] = 0
 
-    board = [-1] * N
-    solutions = []
-    solve_nqueens(N, board, 0, solutions)
+def solve_nqueens(N):
+    """
+    Solve the N Queens problem
+    """
+    board = [[0] * N for _ in range(N)]
+    solve_nqueens_util(board, 0)
 
-    for solution in solutions:
-        print([[i, solution[i]] for i in range(N)])
-
+# Main program
 if __name__ == "__main__":
+    # Validate the number of arguments
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
         sys.exit(1)
 
-    N = sys.argv[1]
-    print_solutions(N)
+    try:
+        N = int(sys.argv[1])
+    except ValueError:
+        print("N must be a number")
+        sys.exit(1)
+
+    if N < 4:
+        print("N must be at least 4")
+        sys.exit(1)
+
+    solutions = []
+    solve_nqueens(N)
+
+    for sol in solutions:
+        print(sol)
