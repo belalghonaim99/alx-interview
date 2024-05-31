@@ -1,51 +1,78 @@
-#!/usr/bin/env python3
-"""
-Script to read stdin line by line and compute metrics:
-- Total file size
-- Number of lines by status code
-"""
-
-import sys
+#!/usr/bin/python3
+""" This module parses the log of an HTTP request and prints the statistics of the log."""
+import re
 
 
-def print_stats(total_size, status_codes):
-    """
-    Print the accumulated metrics
-    """
-    print(f"File size: {total_size}")
-    for code in sorted(status_codes.keys()):
-        if status_codes[code] > 0:
-            print(f"{code}: {status_codes[code]}")
+def extract_input(input_line):
+    """ Extracts the IP, date, request, status code, and file size from the input line."""
+    fp = (
+        r'\s*(?P<ip>\S+)\s*',
+        r'\s*\[(?P<date>\d+\-\d+\-\d+ \d+:\d+:\d+\.\d+)\]',
+        r'\s*"(?P<request>[^"]*)"\s*',
+        r'\s*(?P<status_code>\S+)',
+        r'\s*(?P<file_size>\d+)'
+    )
+    info = {
+        'status_code': 0,
+        'file_size': 0,
+    }
+    log_fmt = '{}\\-{}{}{}{}\\s*'.format(fp[0], fp[1], fp[2], fp[3], fp[4])
+    resp_match = re.fullmatch(log_fmt, input_line)
+    if resp_match is not None:
+        status_code = resp_match.group('status_code')
+        file_size = int(resp_match.group('file_size'))
+        info['status_code'] = status_code
+        info['file_size'] = file_size
+    return info
 
-total_size = 0
-status_codes = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
-line_count = 0
 
-try:
-    for line in sys.stdin:
-        parts = line.split()
-        if len(parts) < 7:
-            continue
+def print_statistics(total_file_size, status_codes_stats):
+    """   Prints the statistics of the HTTP request log."""
+    print('File size: {:d}'.format(total_file_size), flush=True)
+    for status_code in sorted(status_codes_stats.keys()):
+        num = status_codes_stats.get(status_code, 0)
+        if num > 0:
+            print('{:s}: {:d}'.format(status_code, num), flush=True)
 
-        ip, dash, user, date, method, path, protocol, status, size = parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], parts[-2], parts[-1]
 
-        if not status.isdigit() or not size.isdigit():
-            continue
+def update_metrics(line, total_file_size, status_codes_stats):
+    """ Updates the metrics of the HTTP request log."""
+    line_info = extract_input(line)
+    status_code = line_info.get('status_code', '0')
+    if status_code in status_codes_stats.keys():
+        status_codes_stats[status_code] += 1
+    return total_file_size + line_info['file_size']
 
-        status = int(status)
-        size = int(size)
 
-        if status in status_codes:
-            status_codes[status] += 1
+def run():
+    '''Starts the log parser.
+    '''
+    line_num = 0
+    total_file_size = 0
+    status_codes_stats = {
+        '200': 0,
+        '301': 0,
+        '400': 0,
+        '401': 0,
+        '403': 0,
+        '404': 0,
+        '405': 0,
+        '500': 0,
+    }
+    try:
+        while True:
+            line = input()
+            total_file_size = update_metrics(
+                line,
+                total_file_size,
+                status_codes_stats,
+            )
+            line_num += 1
+            if line_num % 10 == 0:
+                print_statistics(total_file_size, status_codes_stats)
+    except (KeyboardInterrupt, EOFError):
+        print_statistics(total_file_size, status_codes_stats)
 
-        total_size += size
-        line_count += 1
 
-        if line_count % 10 == 0:
-            print_stats(total_size, status_codes)
-
-except KeyboardInterrupt:
-    print_stats(total_size, status_codes)
-    raise
-
-print_stats(total_size, status_codes)
+if __name__ == '__main__':
+    run()
